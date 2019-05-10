@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Gérer les biens' %}
+
+{% block body %}
+    <div class="container mt-4">
+
+        <h1>Gérer les biens</h1>
+        <div class="text-left">
+            <a href="{{ path('admin.produit.new') }}" class="btn btn-primary">Créer un nouveau produit</a>
+        </div>
+
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        <table class="table table-striped mt-4">
+            <thread>
+                <tr>
+                    <th>Titre</th>
+                    <th>Actions</th>
+                </tr>
+            </thread>
+            <tbody>
+            {% for produit in produits %}
+            <tr>
+                <td>{{ produit.Nom }}</td>
+                <td>
+                    <a href="{{ path('admin.produit.edit', {id: produit.id}) }}" class="btn btn-secondary">Editer</a>
+                    <form method="post" action="{{ path('admin.produit.update', {id: produit.id}) }}" style="display:
+                    inline-block">
+                    {% if produit.Disponible == 0 %}
+                        <input type="hidden" name="_method" value="UPDATE">
+                        <input type="hidden" name="_token" value="{{ csrf_token('update' ~ produit.id) }}">
+                        <button class="btn btn-danger">Remettre</button>
+                    {% else %}
+                        <input type="hidden" name="_method" value="UPDATE">
+                        <input type="hidden" name="_token" value="{{ csrf_token('update' ~ produit.id) }}">
+                        <button class="btn btn-danger">Retirer</button>
+                    {% endif %}
+                    </form>
+                        <a href="{{ path('admin.rabais.new', {id: produit.id}) }}" class="btn btn-secondary">Ajouter Rabais</a>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+
+    </div>
+{% endblock %}

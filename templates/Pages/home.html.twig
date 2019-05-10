@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Commande de Produits' %}
+
+{% block body %}
+    <div class="jumbotron text-center">
+        <h1>Commande de Produits</h1>
+    </div>
+    <div class="container">
+        <div class="row flex">
+            {% for rabai in rabais %}
+                <div class="col-md-4 mt-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <a href="{{ path('produit.show', {id: rabai.Id}) }}"> {{ rabai.Nom }}</a>
+                            </h5>
+                            <p class="card-text"> {{ rabai.Description }}</p>
+                            <div class="text-primary">
+                                <div class="text-danger" style="font-size: 2rem;font-weight: bold;">
+                                    {{ rabai.NouveauPrix }}$
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Tous nos biens' %}
+
+{% block body %}
+    <div class="jumbotron">
+        <div class="container">
+            {{ form_start(form) }}
+            <div class="form-row align-item-end">
+                <div class="col">
+                    {{ form_row(form.maxPrice) }}
+                </div>
+                <div class="col">
+                    {{ form_row(form.categories) }}
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <button class="btn btn-primary">Rechercher</button>
+                    </div>
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+    <div class="container mt-4">
+        <h1>Voir tous nos biens</h1>
+    </div>
+    <div class="container">
+        <div class="row flex">
+            {% for produit in produits %}
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <a href="{{ path('produit.show', {id: produit.id, slug: produit.slug}) }}"> {{ produit.Nom }}</a>
+                        </h5>
+                        <p class="card-text">{{ produit.Description }}</p>
+                        <div class="text-primary" style="font-weight: bold;font-size: 2rem;">
+                            {% for rabai in rabais %}
+                                {% if rabai.Id == produit.id %}
+                                    {% if rabai.NouveauPrix == produit.Prix %}
+                                    <div class="text-primary" style="font-size: 2rem;font-weight: bold;">
+                                        {{ rabai.NouveauPrix }}$
+                                    </div>
+                                    {% else %}
+                                    <div class="text-danger" style="font-size: 2rem;font-weight: bold;">
+                                        {{ rabai.NouveauPrix }}$
+                                    </div>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                            {% for sansRabai in sansRabais %}
+                                {% if sansRabai.Id == produit.id %}
+                                    <div class="text-primary" style="font-size: 2rem;font-weight: bold;">
+                                        {{ produit.Prix }}$
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="pagination mt-4">
+            {{ knp_pagination_render(produits) }}
+        </div>
+    </div>
+{% endblock %}

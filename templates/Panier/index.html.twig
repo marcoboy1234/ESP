@@ -1,0 +1,99 @@
+{% extends 'base.html.twig' %}
+
+{% block title "Panier" %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1>Votre panier</h1>
+    {% if message is defined  %}
+        <h1>{{ message }}</h1>
+    {% endif %}
+    {% if lePanier is defined %}
+    {% if lePanier != null %}
+    <table class="table table-striped mt-4">
+        <thead>
+            <tr>
+                <th>Nom du produit</th>
+                <th>Quantité</th>
+                <th>Prix total</th>
+                <th>Modification</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for Panier in lePanier %}
+            <tr>
+                <td>{{Panier['nom']}}</td>
+                <td>{{Panier['quantite']}}</td>
+                <td>{{Panier['prix']}}$</td>
+                <td>
+                    <a href="{{ path('produit.show', {id: Panier['Id']}) }}" class="btn btn-primary">Quantite</a>
+                    <a href="{{ path('panier.retirer', {nomProduit: Panier['nom']}) }}" class="btn btn-danger">Retirer
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <h3>Pour visuaiser votre panier vous devez sélectionner des produits.</h3>
+    {% endif %}
+    {% endif %}
+</div>
+{% if lePanier is defined %}
+{% if lePanier != null %}
+{% set Soustotal = 0 %}
+{% for Panier in lePanier %}
+    {% set Soustotal = Soustotal + Panier['prix'] %}
+{% endfor %}
+    <div class="container">
+        {% set TPS = Soustotal * 0.05 %}
+        {% set TVQ = Soustotal * 0.09975 %}
+        {% set Total = Soustotal + TPS + TVQ %}
+        <table class="table table-sm align-baseline">
+            <thead>
+                <tr>
+                    <th>Sous-total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{Soustotal}}$</td>
+                </tr>
+            </tbody>
+            <thead>
+                <tr>
+                    <th>TPS</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ TPS|round(2, 'floor') }}$</td>
+                </tr>
+            </tbody>    
+            <thead>
+                <tr>
+                    <th>TVQ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ TVQ|round(2, 'floor') }}$</td>
+                </tr>
+            </tbody>
+    
+            <thead>
+                <tr>
+                    <th>Grand total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ Total|round(2, 'floor') }}$</td>
+                </tr>
+            </tbody>
+        </table>
+        <a href="{{ path('properties.index', {grandTotal: Total|round(2, 'floor')}) }}" class="btn btn-secondary">Continuer</a>
+        <a href="{{ path('panier.confirmation') }}" class="btn btn-secondary">Terminer</a>
+    </div>
+{% endif %}
+{% endif %}
+{% endblock %}

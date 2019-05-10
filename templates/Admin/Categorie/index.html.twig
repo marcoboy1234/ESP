@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Gérer les biens' %}
+
+{% block body %}
+    <div class="container mt-4">
+
+        <h1>Gérer les catégories</h1>
+        <div class="text-left">
+            <a href="{{ path('admin.categorie.new') }}" class="btn btn-primary">Créer une nouvelle categorie</a>
+        </div>
+
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        <table class="table table-striped mt-4">
+            <thread>
+                <tr>
+                    <th>Nom</th>
+                    <th>Actions</th>
+                </tr>
+            </thread>
+            <tbody>
+            {% for categorie in categories %}
+            <tr>
+                <td>{{ categorie.Nom }}</td>
+                <td>
+                    <a href="{{ path('admin.categorie.edit', {id: categorie.id}) }}" class="btn btn-secondary">Editer</a>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+
+    </div>
+{% endblock %}

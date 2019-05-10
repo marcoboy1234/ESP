@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title produit.Nom %}
+
+{% block body %}
+    <div class="jumbotron">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <img src="{{ asset('uploads/' ~ produit.Photo) }}" class="img-thumbnail">
+                </div>
+                <div class="col-md-4">
+                    <h1>{{ produit.Nom }}</h1>
+                    <h2>{{ categorie[0].Nom }}</h2>
+                    <div class="text-primary" style="font-size: 4rem;font-weight: bold;">
+                        {% if solde != 0 and produit.Prix != solde %}
+                            <div class="text-danger" style="font-size: 2rem;font-weight: bold;">
+                                {{ rabais }} % de rabais
+                            </div>
+                            <div class="text-primary" style="font-size: 4rem;font-weight: bold;">
+                                {{ solde }} $</div>
+                        {% else %}
+                            <div class="text-primary" style="font-size: 4rem;font-weight: bold;">
+                                {{ produit.Prix }} $</div>
+                        {% endif %}</div>
+                        <form action="{{ path('panier.add.produit', {id: produit.id}) }}" class="input-group mb-3" method="POST">
+                            <div class="input-group-prepend">
+                              <label class="input-group-text" for="inputGroupSelect01">Quantité</label>
+                            </div>
+                            <select class="custom-select" id="inputGroupSelectQuantite" name="inputGroupSelectQuantite">
+                                {% for cpt in 1 .. produit.Inventaire %}
+                                    <option value={{ cpt }}>{{ cpt }}</option>
+                                {% endfor %}
+                            </select>
+                            <input type="submit" value="Ajouter" class="btn btn-primary"/>
+                        </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-4">
+
+        <p>
+            {{ produit.Description | nl2br}}
+        </p>
+        <div class="row">
+            <div class="col-md-8">
+                <h2>Caractéristique</h2>
+                <table class="table table-striped">
+                    <tr>
+                        <td>Inventaire</td>
+                        <td>{{ produit.Inventaire }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
