@@ -44,6 +44,7 @@ class AdminRabaisController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($rabai);
             $entityManager->flush();
+            $this->addFlash('success','Rabais créer avec succès');
 
             return $this->redirectToRoute('rabais_index');
         }
@@ -64,6 +65,7 @@ class AdminRabaisController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
+            $this->addFlash('success','Rabais modifier avec succès');
 
             return $this->redirectToRoute('rabais_index', [
                 'id' => $rabai->getId(),

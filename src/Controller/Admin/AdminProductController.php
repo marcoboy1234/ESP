@@ -57,7 +57,7 @@ class AdminProductController extends AbstractController{
         if ($form->isSubmitted() && $form->isValid()) {
             $this->em->persist($produit);
             $this->em->flush();
-            $this->addFlash('success','Bien créer avec succès');
+            $this->addFlash('success','Produit créer avec succès');
             return $this->redirectToRoute('admin.produit.index');
         }
 
@@ -93,7 +93,7 @@ class AdminProductController extends AbstractController{
                 }
             }
             $this->em->flush();
-            $this->addFlash('success','Bien modifié avec succès');
+            $this->addFlash('success','Produit modifié avec succès');
             return $this->redirectToRoute('admin.produit.index');
         }
 

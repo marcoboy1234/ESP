@@ -47,7 +47,7 @@ class ClientController extends AbstractController{
             dump($user->getUsername());
             $this->em->persist($user);
             $this->em->flush();
-            $this->addFlash('success','Bien créer avec succès');
+            $this->addFlash('success','Compte créer avec succès');
             return $this->redirectToRoute('login');
         }
 

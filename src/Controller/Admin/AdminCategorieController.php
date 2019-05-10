@@ -35,6 +35,7 @@ class AdminCategorieController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($categorie);
             $entityManager->flush();
+            $this->addFlash('success','Catégorie créer avec succès');
 
             return $this->redirectToRoute('admin.categorie.index');
         }
@@ -55,6 +56,7 @@ class AdminCategorieController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
+            $this->addFlash('success','Catégorie modifier avec succès');
 
             return $this->redirectToRoute('admin.categorie.index', [
                 'id' => $categorie->getId(),
