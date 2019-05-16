@@ -17,7 +17,7 @@ class RabaisType extends AbstractType
             ->add('Date_De_Debut')
             ->add('Date_De_Fin')
             ->add('Rabais', null, [
-                'label' => 'Veuiller mettre un pourcentage pour le rabais'
+                'label' => 'Veuiller mettre le pourcentage pour le rabais'
             ])
             ->add('Employe')
         ;

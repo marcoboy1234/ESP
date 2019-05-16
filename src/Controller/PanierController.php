@@ -141,11 +141,12 @@ class PanierController extends AbstractController
      */
     public function edit($id, Request $request, ProduitRepository $repositoryProduit): Response
     {
+        $nouveau = true;
         $produit = $repositoryProduit->find($id);
-        $trouver = $this->verification($produit);
+        $quantite = $request->request->get('inputGroupSelectQuantite');
+        $trouver = $this->verification($produit, $quantite);
         $nomDuProduit = $produit->getNom();
         $rabais = $repositoryProduit->getResultSold($id);
-        $quantite = $request->request->get('inputGroupSelectQuantite');
         if($rabais != null)
         {
             $solde = $repositoryProduit->getResultSold($id);
@@ -159,13 +160,32 @@ class PanierController extends AbstractController
         }
         if($trouver == false)
         {
-            $lepanier = array(
-                'Id' => $produit->getId(),
-                'nom' => $nomDuProduit,
-                'prix' => $prix,
-                'quantite' => $quantite
-            );
-            $_SESSION['panier'][$this->idSession] = $lepanier;
+            $cpt = 0;
+            foreach ($_SESSION['panier'] as $lesProduit) {
+                if($lesProduit['nom'] == $produit->getNom() and ($quantite != $lesProduit['quantite']))
+                {
+                    $lepanier = array(
+                        'Id' => $produit->getId(),
+                        'nom' => $nomDuProduit,
+                        'prix' => $prix,
+                        'quantite' => $quantite
+                    );
+                    $_SESSION['panier'][$cpt] = $lepanier;
+                    $nouveau = false;
+                }
+                $cpt++;
+            }
+            if($nouveau == true)
+            {
+                $lepanier = array(
+                    'Id' => $produit->getId(),
+                    'nom' => $nomDuProduit,
+                    'prix' => $prix,
+                    'quantite' => $quantite
+                );
+                $_SESSION['panier'][$this->idSession] = $lepanier;
+            }
+            dump($lepanier);
             $message = null;
         }
         else
@@ -178,13 +198,12 @@ class PanierController extends AbstractController
         ]);
     }
 
-    public function verification($produit)
+    public function verification($produit, $quantite)
     {
         $trouver = false;
         foreach ($_SESSION['panier'] as $lesProduit) {
-            if($produit->getNom() == $lesProduit['nom']){
+            if(($produit->getNom() == $lesProduit['nom']) and ($quantite == $lesProduit['quantite'])){
                 $trouver = true;
-                dump($trouver);
             }
         }
         return $trouver;
@@ -215,7 +234,6 @@ class PanierController extends AbstractController
             $cpt++;
             $_SESSION['panier'] = $lepanier;    
         }
-        dump($_SESSION['panier']);
         return $this->render('Panier/index.html.twig', [
             'lePanier' => $_SESSION['panier']
         ]);

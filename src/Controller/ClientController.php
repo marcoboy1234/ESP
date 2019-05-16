@@ -10,6 +10,7 @@ use App\Repository\ClientRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class ClientController extends AbstractController{
 
@@ -34,7 +35,7 @@ class ClientController extends AbstractController{
      * @param UserPasswordEncoderInterface $encoder
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function new(Request $request, UserPasswordEncoderInterface $encoder){
+    public function new(Request $request, UserPasswordEncoderInterface $encoder, AuthenticationUtils $authenticationUtils){
 
         $user = new Client();
         $form = $this->createForm(ClientType::class, $user);
@@ -47,8 +48,14 @@ class ClientController extends AbstractController{
             dump($user->getUsername());
             $this->em->persist($user);
             $this->em->flush();
-            $this->addFlash('success','Compte créer avec succès');
-            return $this->redirectToRoute('login');
+            $lastUsername = $authenticationUtils->getLastUsername();
+            $error = $authenticationUtils->getLastAuthenticationError();
+            $success = "Compte créer";
+            return $this->render('Security/login.html.twig', [
+                'last_username' => $lastUsername,
+                'error' => $error,
+                'success' => $success
+            ]);
         }
 
         return $this->render('Security/new.html.twig', [
