@@ -23,13 +23,13 @@ class ProduitSearchType extends AbstractType
                     'placeholder' => 'Budget max'
                 ]
             ])
-            ->add('categories', EntityType::class,[
-                'required' => false,
-                'label' => false,
-                'class' => Categorie::class,
-                'choice_label' => 'Nom',
-                'multiple' => true
-            ])
+            //->add('categories', EntityType::class,[
+            //    'required' => false,
+            //    'label' => false,
+            //    'class' => Categorie::class,
+            //    'choice_label' => 'Nom',
+            //    'multiple' => false
+            //])
         ;
     }
 

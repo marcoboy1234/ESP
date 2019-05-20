@@ -34,32 +34,11 @@ class ProduitRepository extends ServiceEntityRepository
         }
 
         if($search->getCategories()->count() > 0){
-            $k = 0;
             $categorieID = array();
-            $text = null;
-            $query = $query;
             foreach($search->getCategories() as $options){
-                $categorieID[$k] = $options->id;
-                $k++;
-            }
-            if($k == 1){
-                    $query->andWhere("p.Categorie IN (:category)")
-                    ->setParameter("category", $categorieID[0]);
-            }
-            else{
-                $k--;
-                while ($k >= 0){
-                    if ($k != 0){
-                        $text = $text . $categorieID[$k] . ',';
-                    }
-                    else{
-                        $text = $text . $categorieID[$k];
-                    }
-                    $k--;
-                }
-                $query ->andWhere("p.Categorie IN (:text)")
-                    ->setParameter('text', $text);
-                dump($query);
+                $query = $query 
+                ->andWhere("p.Categorie = :text")
+                ->setParameter('text', $options->id);
             }
         }
 

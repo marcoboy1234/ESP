@@ -52,7 +52,7 @@ class HomeController extends AbstractController
 
         foreach ($lesProduits as $value){
             $disponible = $this->repositoryProduit->verification($value->getId(), $value->getInventaire());
-            if( $disponible == true)
+            if( $disponible == true and $value->getDisponible() == true)
             {
                 $rabais = $this->repositoryProduit->getResultSold($value->getId());
                 if($rabais != null)

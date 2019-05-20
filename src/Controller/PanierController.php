@@ -185,7 +185,10 @@ class PanierController extends AbstractController
                 );
                 $_SESSION['panier'][$this->idSession] = $lepanier;
             }
+<<<<<<< HEAD
+=======
             dump($lepanier);
+>>>>>>> master
             $message = null;
         }
         else

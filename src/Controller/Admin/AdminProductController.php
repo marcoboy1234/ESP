@@ -89,7 +89,6 @@ class AdminProductController extends AbstractController{
                 $fileName = $this->repository->trouverLaPhoto($id);
                 foreach ($fileName as $value){
                     $produit->setPhoto($value['Photo']);
-                    dump($value);
                 }
             }
             $this->em->flush();

@@ -45,7 +45,6 @@ class ClientController extends AbstractController{
             $plainPassword = $user->getPassword();
             $encoded = $encoder->encodePassword($user, $plainPassword);
             $user->setPassword($encoded);
-            dump($user->getUsername());
             $this->em->persist($user);
             $this->em->flush();
             $lastUsername = $authenticationUtils->getLastUsername();
